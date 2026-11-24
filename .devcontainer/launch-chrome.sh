@@ -2,10 +2,10 @@
 set -euo pipefail
 
 CHROME_BIN=""
-if command -v google-chrome-stable >/dev/null 2>&1; then
-  CHROME_BIN="google-chrome-stable"
-elif command -v google-chrome >/dev/null 2>&1; then
-  CHROME_BIN="google-chrome"
+if [ -x /opt/google/chrome/google-chrome ]; then
+  CHROME_BIN="/opt/google/chrome/google-chrome"
+elif [ -x /usr/bin/google-chrome-stable ]; then
+  CHROME_BIN="/usr/bin/google-chrome-stable"
 elif command -v chromium-browser >/dev/null 2>&1; then
   CHROME_BIN="chromium-browser"
 elif command -v chromium >/dev/null 2>&1; then
@@ -16,6 +16,8 @@ else
 fi
 
 EXTRA_FLAGS=(
+  "--no-sandbox"
+  "--disable-gpu"
   "--no-first-run"
   "--no-default-browser-check"
   "--password-store=basic"

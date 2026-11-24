@@ -21,11 +21,24 @@ for env_file in ".env" "/workspaces/"*/.env; do
   fi
 done
 
-# Sync updated workspace kasmvnc.yaml if present so git pull updates take effect without rebuild
-for cfg in ".devcontainer/kasmvnc.yaml" "/workspaces/"*/".devcontainer/kasmvnc.yaml"; do
-  if [ -f "$cfg" ]; then
-    cp "$cfg" "$VNC_DIR/kasmvnc.yaml"
-    sudo cp "$cfg" /etc/kasmvnc/kasmvnc.yaml 2>/dev/null || true
+# Sync updated workspace configs/launchers so git pull updates take effect without rebuild
+for ws in "." "/workspaces/"*; do
+  if [ -f "$ws/.devcontainer/kasmvnc.yaml" ]; then
+    cp "$ws/.devcontainer/kasmvnc.yaml" "$VNC_DIR/kasmvnc.yaml"
+    sudo cp "$ws/.devcontainer/kasmvnc.yaml" /etc/kasmvnc/kasmvnc.yaml 2>/dev/null || true
+  fi
+  if [ -f "$ws/.devcontainer/launch-chrome.sh" ]; then
+    sudo cp "$ws/.devcontainer/launch-chrome.sh" /usr/local/bin/launch-chrome 2>/dev/null || true
+    sudo chmod +x /usr/local/bin/launch-chrome 2>/dev/null || true
+    sudo ln -sf /usr/local/bin/launch-chrome /usr/local/bin/google-chrome 2>/dev/null || true
+    sudo ln -sf /usr/local/bin/launch-chrome /usr/local/bin/google-chrome-stable 2>/dev/null || true
+    if [ -f /usr/share/applications/google-chrome.desktop ]; then
+      sudo sed -i 's|^Exec=/usr/bin/google-chrome-stable|Exec=/usr/local/bin/launch-chrome|g' /usr/share/applications/google-chrome.desktop 2>/dev/null || true
+    fi
+  fi
+  if [ -f "$ws/.devcontainer/xstartup" ]; then
+    cp "$ws/.devcontainer/xstartup" "$VNC_DIR/xstartup"
+    chmod +x "$VNC_DIR/xstartup"
     break
   fi
 done

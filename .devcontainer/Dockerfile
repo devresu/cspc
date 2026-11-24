@@ -98,8 +98,10 @@ RUN printf '%s\n' \
     > /home/vscode/.config/xfce4/xfconf/xfce-perchannel-xml/xsettings.xml && \
     chown -R vscode:vscode /home/vscode/.config
 
-# Add Google Chrome desktop shortcut and set it as default browser
-RUN printf '%s\n' \
+# Add Google Chrome desktop shortcut, wrap PATH commands, and set as default browser
+RUN ln -sf /usr/local/bin/launch-chrome /usr/local/bin/google-chrome && \
+    ln -sf /usr/local/bin/launch-chrome /usr/local/bin/google-chrome-stable && \
+    printf '%s\n' \
     '[Desktop Entry]' \
     'Version=1.0' \
     'Name=Google Chrome' \
@@ -111,6 +113,9 @@ RUN printf '%s\n' \
     'Categories=Network;WebBrowser;' \
     > /home/vscode/Desktop/google-chrome.desktop && \
     cp /home/vscode/Desktop/google-chrome.desktop /usr/share/applications/google-chrome-codespace.desktop && \
+    if [ -f /usr/share/applications/google-chrome.desktop ]; then \
+        sed -i 's|^Exec=/usr/bin/google-chrome-stable|Exec=/usr/local/bin/launch-chrome|g' /usr/share/applications/google-chrome.desktop; \
+    fi && \
     chmod +x /home/vscode/Desktop/google-chrome.desktop && \
     chown vscode:vscode /home/vscode/Desktop/google-chrome.desktop
 
