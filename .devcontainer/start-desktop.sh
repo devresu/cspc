@@ -21,6 +21,15 @@ for env_file in ".env" "/workspaces/"*/.env; do
   fi
 done
 
+# Sync updated workspace kasmvnc.yaml if present so git pull updates take effect without rebuild
+for cfg in ".devcontainer/kasmvnc.yaml" "/workspaces/"*/".devcontainer/kasmvnc.yaml"; do
+  if [ -f "$cfg" ]; then
+    cp "$cfg" "$VNC_DIR/kasmvnc.yaml"
+    sudo cp "$cfg" /etc/kasmvnc/kasmvnc.yaml 2>/dev/null || true
+    break
+  fi
+done
+
 if [ ! -f "$VNC_DIR/kasmvnc.yaml" ] && [ -f /etc/kasmvnc/kasmvnc.yaml ]; then
   cp /etc/kasmvnc/kasmvnc.yaml "$VNC_DIR/kasmvnc.yaml"
 fi

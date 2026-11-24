@@ -20,7 +20,7 @@ encoding:
     min_quality: 7
     max_quality: 9
     consider_lossless_quality: 10
-    rectangle_compress_threads: 0
+    rectangle_compress_threads: auto
   video_encoding_mode:
     jpeg_quality: -1
     webp_quality: 8
@@ -29,8 +29,10 @@ encoding:
       height: 1080
     enter_video_encoding_mode:
       time_threshold: 2
-      area_threshold: 40
-      video_scaling: 1
+      area_threshold: 40%
+    exit_video_encoding_mode:
+      time_threshold: 3
+    scaling_algorithm: progressive_bilinear
 
 runtime_configuration:
   allow_client_to_override_kasm_server_settings: true
