@@ -1,0 +1,6 @@
+* text=auto
+*.sh text eol=lf
+.devcontainer/xstartup text eol=lf
+.devcontainer/Dockerfile text eol=lf
+.devcontainer/kasmvnc.yaml text eol=lf
+*.bat text eol=crlf

@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+unset SESSION_MANAGER
+unset DBUS_SESSION_BUS_ADDRESS
+
+export XDG_SESSION_TYPE=x11
+export GDK_BACKEND=x11
+export PULSE_SERVER="${PULSE_SERVER:-unix:/tmp/pulseaudio.socket}"
+
+# Keep XFCE snappy without compositor overhead
+(
+  sleep 2
+  xfconf-query -c xfwm4 -p /general/use_compositing -s false 2>/dev/null || true
+  xset -dpms s off s noblank 2>/dev/null || true
+) &
+
+if command -v dbus-launch >/dev/null 2>&1; then
+  exec dbus-launch --exit-with-session startxfce4
+else
+  exec startxfce4
+fi

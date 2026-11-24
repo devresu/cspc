@@ -1,0 +1,39 @@
+desktop:
+  resolution:
+    width: 1920
+    height: 1080
+  allow_resize: true
+  pixel_depth: 24
+
+network:
+  protocol: http
+  interface: 0.0.0.0
+  websocket_port: 6901
+  use_ipv4: true
+  use_ipv6: false
+  ssl:
+    require_ssl: false
+
+encoding:
+  max_frame_rate: 60
+  rect_encoding_mode:
+    min_quality: 7
+    max_quality: 9
+    consider_lossless_quality: 10
+    rectangle_compress_threads: 0
+  video_encoding_mode:
+    jpeg_quality: -1
+    webp_quality: 8
+    max_resolution:
+      width: 1920
+      height: 1080
+    enter_video_encoding_mode:
+      time_threshold: 2
+      area_threshold: 40
+      video_scaling: 1
+
+runtime_configuration:
+  allow_client_to_override_kasm_server_settings: true
+
+user_session:
+  session_type: shared

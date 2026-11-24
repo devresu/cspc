@@ -1,0 +1,8 @@
+# Secrets & local environment overrides
+.env
+.env.local
+
+# OS / Editor artifacts
+.DS_Store
+Thumbs.db
+*.log
